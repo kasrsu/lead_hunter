@@ -22,4 +22,9 @@ echo "📍 Target Maps URL: ${MAPS_URL}"
 echo "📁 Output File    : ${OUTPUT_FILE}"
 echo "=================================================="
 
-python3 -u full_lead_processing/main.py "${MAPS_URL}" "${OUTPUT_FILE}"
+PYTHON_BIN="/home/kasr/Storage/Study_Dir/venvs/vz_rag/bin/python3"
+if [ ! -f "$PYTHON_BIN" ]; then
+    PYTHON_BIN="python3"
+fi
+
+"${PYTHON_BIN}" -u full_lead_processing/main.py "${MAPS_URL}" "${OUTPUT_FILE}"

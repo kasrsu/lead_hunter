@@ -9,6 +9,7 @@ import type { Campaign, CampaignWithStats, PipelineStage } from "@/lib/types";
 
 interface CampaignRow {
   id: string;
+  session_id?: string;
   name: string;
   keyword: string;
   location: string;
@@ -31,7 +32,7 @@ function rowToCampaign(row: CampaignRow): Campaign {
   };
 }
 
-const COLUMNS = "id, name, keyword, location, min_rating, min_reviews, status, created_at";
+const COLUMNS = "id, session_id, name, keyword, location, min_rating, min_reviews, status, created_at";
 
 export interface NewCampaign {
   name: string;
@@ -39,11 +40,15 @@ export interface NewCampaign {
   location: string;
   minRating: number;
   minReviews: number;
+  sessionId?: string;
 }
 
 export function insertCampaign(data: NewCampaign): Campaign {
+  const db = getDb();
+  ensureSessionIdColumn(db);
   const row: CampaignRow = {
     id: randomUUID(),
+    session_id: data.sessionId || "sess_default",
     name: data.name,
     keyword: data.keyword,
     location: data.location,
@@ -52,9 +57,9 @@ export function insertCampaign(data: NewCampaign): Campaign {
     status: "active",
     created_at: new Date().toISOString(),
   };
-  getDb()
+  db
     .prepare(
-      `INSERT INTO campaigns (${COLUMNS}) VALUES (@id, @name, @keyword, @location,
+      `INSERT INTO campaigns (${COLUMNS}) VALUES (@id, @session_id, @name, @keyword, @location,
        @min_rating, @min_reviews, @status, @created_at)`
     )
     .run(row);
@@ -62,7 +67,9 @@ export function insertCampaign(data: NewCampaign): Campaign {
 }
 
 export function getCampaign(id: string): Campaign | null {
-  const row = getDb().prepare(`SELECT ${COLUMNS} FROM campaigns WHERE id = ?`).get(id) as
+  const db = getDb();
+  ensureSessionIdColumn(db);
+  const row = db.prepare(`SELECT ${COLUMNS} FROM campaigns WHERE id = ?`).get(id) as
     | CampaignRow
     | undefined;
   return row ? rowToCampaign(row) : null;
@@ -84,14 +91,33 @@ export function renameCampaign(id: string, name: string): Campaign {
   return updated;
 }
 
+function ensureSessionIdColumn(db: ReturnType<typeof getDb>) {
+  try {
+    const cols = (db.pragma("table_info(campaigns)") as { name: string }[]).map((c) => c.name);
+    if (!cols.includes("session_id")) {
+      db.exec(`ALTER TABLE campaigns ADD COLUMN session_id TEXT NOT NULL DEFAULT 'sess_default'`);
+      db.exec(`CREATE INDEX IF NOT EXISTS idx_campaigns_session ON campaigns(session_id)`);
+    }
+  } catch {
+    // best effort
+  }
+}
+
 /**
  * All campaigns (newest first) with per-campaign lead count, stage counts and
- * average score — one query for the campaign rows, one GROUP BY for leads.
+ * average score — option to filter by session_id.
  */
-export function listCampaignsWithStats(): CampaignWithStats[] {
+export function listCampaignsWithStats(sessionId?: string): CampaignWithStats[] {
   const db = getDb();
-  const campaigns = (db.prepare(`SELECT ${COLUMNS} FROM campaigns ORDER BY created_at DESC`).all() ??
-    []) as CampaignRow[];
+  ensureSessionIdColumn(db);
+
+  const query = sessionId
+    ? `SELECT ${COLUMNS} FROM campaigns WHERE session_id = ? ORDER BY created_at DESC`
+    : `SELECT ${COLUMNS} FROM campaigns ORDER BY created_at DESC`;
+
+  const campaigns = (sessionId
+    ? db.prepare(query).all(sessionId)
+    : db.prepare(query).all()) as CampaignRow[];
 
   // Per-campaign stage counts (for the funnel) and per-campaign average score.
   const stageRows = db

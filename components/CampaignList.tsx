@@ -10,7 +10,7 @@ interface CampaignListProps {
 export default function CampaignList({ campaigns }: CampaignListProps) {
   if (campaigns.length === 0) {
     return (
-      <p className="py-6 text-sm text-paper-muted">
+      <p className="py-6 text-xs text-slate-500 font-mono font-medium">
         No campaigns yet. Run your first scan below — each scan becomes a campaign with its own
         kanban board.
       </p>
@@ -25,30 +25,30 @@ export default function CampaignList({ campaigns }: CampaignListProps) {
           <Link
             key={campaign.id}
             href={`/campaigns/${campaign.id}`}
-            className="group rounded-xl border border-ink-border bg-ink-surface px-5 py-4 transition hover:border-signal/50"
+            className="group rounded-xl border border-orange-200/80 bg-white/80 backdrop-blur-xl px-5 py-4 transition hover:border-orange-400 shadow-sm hover:shadow-md shadow-orange-500/5"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="truncate font-display text-base font-medium text-paper group-hover:text-signal">
+                <p className="truncate font-display text-base font-bold text-slate-900 group-hover:text-orange-600 transition-colors">
                   {campaign.name}
                 </p>
-                <p className="mt-0.5 font-mono text-xs text-paper-muted">
+                <p className="mt-0.5 font-mono text-xs text-slate-500 font-medium">
                   {campaign.keyword} · {campaign.location} · {new Date(campaign.createdAt).toLocaleDateString()}
-                  {campaign.status === "archived" && <span className="ml-2 text-red-400">archived</span>}
+                  {campaign.status === "archived" && <span className="ml-2 text-rose-600 font-bold">archived</span>}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-4">
-                <div className="flex items-center gap-4 font-mono text-xs text-slate-400">
+                <div className="flex items-center gap-4 font-mono text-xs text-slate-600 font-medium">
                   <span>
-                    <span className="text-slate-100 font-bold">{campaign.leadCount}</span> leads
+                    <span className="text-slate-900 font-bold">{campaign.leadCount}</span> leads
                   </span>
-                  {campaign.avgScore != null && <span>avg {campaign.avgScore}/100</span>}
+                  {campaign.avgScore != null && <span className="font-bold text-orange-600">avg {campaign.avgScore}/100</span>}
                   <span>
-                    <span className="text-amber-400 font-bold">{campaign.stageCounts.sent}</span> sent
+                    <span className="text-emerald-700 font-bold">{campaign.stageCounts.sent}</span> sent
                   </span>
                 </div>
 
-                <span className="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-xs group-hover:bg-amber-500 group-hover:text-slate-950 transition-all flex items-center gap-1.5">
+                <span className="px-3 py-1.5 rounded-xl bg-orange-100 border border-orange-200 text-orange-900 font-bold text-xs group-hover:bg-gradient-to-r group-hover:from-orange-500 group-hover:to-amber-600 group-hover:text-white transition-all flex items-center gap-1.5 shadow-xs">
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -57,7 +57,7 @@ export default function CampaignList({ campaigns }: CampaignListProps) {
               </div>
             </div>
 
-            <div className="mt-3 flex h-1.5 w-full overflow-hidden rounded-full bg-ink-border">
+            <div className="mt-3 flex h-2 w-full overflow-hidden rounded-full bg-orange-100/80 border border-orange-200/60">
               {PIPELINE.filter((c) => campaign.stageCounts[c.stage] > 0).map((c) => (
                 <div
                   key={c.stage}

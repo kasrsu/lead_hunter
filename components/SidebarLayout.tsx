@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AgentDeploymentBanner from "@/components/AgentDeploymentBanner";
 import TelegramConfigModal from "@/components/TelegramConfigModal";
+import SessionSwitcher from "@/components/SessionSwitcher";
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -60,6 +61,17 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       ),
     },
     {
+      label: "Lead Generator Studio",
+      href: "/lead-hunter",
+      badge: "NEW",
+      badgeColor: "bg-orange-500/20 text-orange-600 border-orange-500/30",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      ),
+    },
+    {
       label: "Lead Management",
       href: "/leads",
       badge: totalLeads > 0 ? totalLeads : null,
@@ -101,7 +113,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0D14] text-slate-100 flex font-sans antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans antialiased">
       {/* Telegram Config Modal */}
       <TelegramConfigModal
         isOpen={isTelegramModalOpen}
@@ -109,18 +121,18 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       />
 
       {/* Sidebar */}
-      <aside className="w-64 border-r border-slate-800 bg-[#0F131C] flex flex-col fixed inset-y-0 z-40">
+      <aside className="w-64 glass-sidebar flex flex-col fixed inset-y-0 z-40">
         {/* Brand Header */}
-        <div className="h-16 px-6 flex items-center justify-between border-b border-slate-800/80 bg-[#121723]">
+        <div className="h-16 px-6 flex items-center justify-between border-b border-orange-200/60 bg-white/80">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center font-bold text-slate-950 text-base shadow-lg shadow-amber-500/20">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-orange-500/20">
               LH
             </div>
             <div>
-              <span className="font-display font-semibold text-base text-slate-100 tracking-tight block leading-tight">
+              <span className="font-display font-bold text-base text-slate-900 tracking-tight block leading-tight">
                 LeadHunter
               </span>
-              <span className="text-[10px] font-mono tracking-wider text-amber-400 uppercase block">
+              <span className="text-[10px] font-mono tracking-wider text-orange-600 uppercase block font-semibold">
                 Enterprise AI OS
               </span>
             </div>
@@ -128,16 +140,16 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         </div>
 
         {/* AI Agent Status Pill */}
-        <div className="px-4 py-3 border-b border-slate-800/60 bg-slate-900/40">
-          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs">
+        <div className="px-4 py-3 border-b border-orange-200/60 bg-orange-50/40">
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white border border-orange-200/80 text-xs shadow-xs">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
               </span>
-              <span className="text-slate-300 font-medium font-mono text-[11px]">LangGraph Agent</span>
+              <span className="text-slate-800 font-semibold font-mono text-[11px]">LangGraph Agent</span>
             </div>
-            <span className="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded font-mono">
+            <span className="text-[10px] text-orange-700 bg-orange-100/80 px-1.5 py-0.5 rounded font-mono border border-orange-200 font-semibold">
               Ollama
             </span>
           </div>
@@ -145,7 +157,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
 
         {/* Nav Links */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          <div className="px-3 pb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-widest font-mono">
+          <div className="px-3 pb-2 text-[10px] font-bold text-orange-600/80 uppercase tracking-widest font-mono">
             Navigation
           </div>
           {navItems.map((item) => {
@@ -158,14 +170,14 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
+                className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                   isActive
-                    ? "bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-sm"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                    ? "bg-gradient-to-b from-orange-500 to-amber-600 text-white shadow-md shadow-orange-500/20 font-bold border-t border-white/30"
+                    : "text-slate-700 hover:text-orange-600 hover:bg-orange-50/80"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className={isActive ? "text-amber-400" : "text-slate-400"}>
+                  <span className={isActive ? "text-white" : "text-slate-400 group-hover:text-orange-500"}>
                     {item.icon}
                   </span>
                   <span>{item.label}</span>
@@ -173,7 +185,9 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
                 {item.badge != null && (
                   <span
                     className={`px-2 py-0.5 text-xs font-mono rounded-full font-semibold border ${
-                      item.badgeColor || "bg-slate-800 text-slate-300 border-slate-700"
+                      isActive
+                        ? "bg-orange-600/40 text-white border-orange-400/50"
+                        : "bg-orange-100 text-orange-800 border-orange-200"
                     }`}
                   >
                     {item.badge}
@@ -185,15 +199,15 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         </nav>
 
         {/* Quick Seeder Trigger Footer */}
-        <div className="p-4 border-t border-slate-800 bg-[#0C0F17]">
+        <div className="p-4 border-t border-orange-200/60 bg-orange-50/40">
           <Link
             href="/import"
-            className="w-full py-2 px-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg shadow-md flex items-center justify-center gap-2 transition-all"
+            className="w-full py-2 px-3 bg-gradient-to-b from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 border-t border-white/30 flex items-center justify-center gap-2 transition-all"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
-            Import / Load 88 Leads
+            Import Leads
           </Link>
         </div>
       </aside>
@@ -201,34 +215,39 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       {/* Main Content Area */}
       <div className="pl-64 flex-1 flex flex-col min-w-0">
         {/* Top Header Bar */}
-        <header className="h-16 border-b border-slate-800/80 bg-[#0F131C]/90 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between">
+        <header className="h-16 glass-header sticky top-0 z-30 px-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h2 className="font-display font-medium text-lg text-slate-100">
+            <h2 className="font-display font-semibold text-base text-slate-900 tracking-tight">
               Lead Intelligence & Outreach Management Portal
             </h2>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Telegram Config Button */}
+            {/* Session Switcher - User Session Isolation */}
+            <SessionSwitcher />
+
+            {/* Telegram Config Button (Clean SVG symbol, NO emoji) */}
             <button
               onClick={() => setIsTelegramModalOpen(true)}
-              className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono rounded-lg transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-white hover:bg-orange-50 text-slate-700 border border-orange-200/80 text-xs font-semibold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
               title="Configure Telegram Notifications"
             >
-              <span>📱</span>
+              <svg className="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
               <span>Telegram Bot</span>
             </button>
 
-            {/* Universal Deploy Autonomous Agent Button */}
+            {/* Universal Deploy Autonomous Agent Button (Clean SVG symbol, NO emoji) */}
             <button
               onClick={handleDeployAgent}
               disabled={deploying}
-              className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-lg shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2 disabled:opacity-50"
+              className="px-4 py-1.5 bg-gradient-to-b from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 border-t border-white/30 transition-all flex items-center gap-2 disabled:opacity-50"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>{deploying ? "Deploying..." : "🚀 Deploy Autonomous Agent"}</span>
+              <span>{deploying ? "Deploying..." : "Deploy Autonomous Agent"}</span>
             </button>
           </div>
         </header>

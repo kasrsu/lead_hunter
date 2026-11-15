@@ -72,24 +72,24 @@ export default function KanbanBoard({ leads, onMove, onSend, onOpen }: KanbanBoa
             }}
             onDragLeave={() => setOverStage((s) => (s === col.stage ? null : s))}
             onDrop={(e) => handleDrop(e, col.stage)}
-            className={`flex min-h-[260px] w-64 shrink-0 flex-col rounded-xl border bg-ink-surface/60 transition ${
-              highlight ? "border-signal/60 ring-1 ring-signal/40" : "border-ink-border"
+            className={`flex min-h-[280px] w-72 shrink-0 flex-col rounded-2xl border bg-white/70 backdrop-blur-xl transition shadow-sm ${
+              highlight ? "border-orange-500 ring-2 ring-orange-500/20 bg-orange-50/50" : "border-orange-200/80"
             }`}
           >
-            <div className="flex items-center justify-between gap-2 border-b border-ink-border px-3.5 py-2.5">
-              <span className={`flex items-center gap-2 text-xs font-medium ${col.text}`}>
-                <span className={`h-2 w-2 rounded-full ${col.dot}`} aria-hidden />
+            <div className="flex items-center justify-between gap-2 border-b border-orange-200/60 px-4 py-3 bg-white/40">
+              <span className="flex items-center gap-2 text-xs font-bold text-slate-900">
+                <span className={`h-2.5 w-2.5 rounded-full ${col.dot}`} aria-hidden />
                 {col.label}
               </span>
-              <span className="rounded-full bg-ink-border px-2 py-0.5 font-mono text-[11px] text-paper-muted">
+              <span className="rounded-full bg-orange-100 border border-orange-200/80 px-2.5 py-0.5 font-mono text-[11px] font-bold text-orange-950">
                 {count}
               </span>
             </div>
 
-            <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-2.5">
+            <div className="flex flex-1 flex-col gap-2.5 overflow-y-auto p-3">
               {count === 0 ? (
-                <p className="px-1 py-6 text-center font-mono text-[11px] text-paper-muted/50">
-                  {col.stage === "ready" ? "drafts waiting for your approval" : "no leads here yet"}
+                <p className="px-1 py-8 text-center font-mono text-[11px] text-slate-500 font-medium italic">
+                  {col.stage === "ready" ? "Drafts waiting for your approval" : "No leads here yet"}
                 </p>
               ) : (
                 (byStage.get(col.stage) ?? []).map((lead) => (

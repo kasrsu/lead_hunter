@@ -13,10 +13,10 @@ export default function CampaignsPage() {
     <SidebarLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-100">
+          <h1 className="font-display text-2xl font-bold text-slate-900">
             Campaigns Management
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 mt-1">
             Overview of all active and archived lead intelligence campaigns.
           </p>
         </div>

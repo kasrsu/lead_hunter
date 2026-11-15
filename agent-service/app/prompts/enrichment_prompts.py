@@ -36,16 +36,26 @@ Dear {business_name} Team,
 
 - PART 1 (WARM GREETING & TAILORED OBSERVATION):
   * Open with: "Greetings from EvoSolutions! I'm Anusara Sugeeshwara from our marketing team."
-  * Next, write a unique, authentic sentence acknowledging {business_name} based on their scale & reputation:
-    - If high review volume (500+ reviews): Recognize them as a major local dining icon / high-traffic landmark in {address}.
-    - If high rating with growing reviews: Recognize them as an impressive rising culinary gem setting high standards.
+  * Next, write a unique, authentic sentence acknowledging {business_name} based on their category ({category}), scale & reputation:
+    - For Hospitality/Restaurants: Recognize them as a major local dining favorite or rising culinary establishment in {address}.
+    - For B2B/Marketing/Software/Agencies: Recognize them as an established, top-rated service provider / agency in {address}.
+    - For Home & Trade Services (Plumbing, HVAC, Roofing, etc.): Recognize them as a highly trusted local contractor in {address}.
+    - For Professional/Medical/Legal: Recognize them as a premier professional practice in {address}.
     - Naturally incorporate their exact rating ({rating}/5) and review volume ({reviews_count} reviews) in a fluid, conversational way.
 
 - PART 2 (Tailored EvoSolutions Intro):
-  * Write 1 sentence explaining what EvoSolutions does (smart POS, real-time kitchen display sync, table management, direct ordering) tailored specifically to their category ({category}).
+  * Write 1 sentence explaining what EvoSolutions does tailored specifically to their category ({category}):
+    - For Hospitality/Restaurants: Smart POS, real-time kitchen display sync, VIP table management, and direct online ordering channels.
+    - For B2B/Marketing/Software/Agencies: Client acquisition funnels, modern web presence optimization, and automated lead capture systems.
+    - For Home & Trade Services: Instant mobile quote request portals, 24/7 dispatch intake, and local Google Maps SEO.
+    - For Professional/Healthcare/Legal: Automated client/patient intake portals, appointment booking systems, and reputation management.
 
 - PART 3 (Strategic Value Bullet Points):
-  * Provide 2 to 3 clean, natural bullet points (starting with -) offering specific operational benefits directly tied to their scale, location ({address}), or strategic angle ({angle}). Avoid generic fluff.
+  * Provide 2 to 3 clean, natural bullet points (starting with -) offering specific operational or growth benefits directly tied to their category ({category}), scale, location ({address}), or strategic angle ({angle}). Avoid generic fluff.
+    - Hospitality examples: Kitchen display sync, table management pacing, direct ordering margin protection.
+    - B2B/Agency/Software examples: Automated lead intake funnels, high-converting digital presence, predictable pipeline generation.
+    - Trades examples: Fast mobile quote response, automated local review collection, streamlined booking dispatch.
+    - Professional/Medical examples: Seamless intake form automation, online appointment scheduling, brand reputation protection.
 
 4. STRICT OMISSION RULE (NO OUTROS OR CONTACT DETAILS):
 - DO NOT write any closing proposal summary, system outro, call-to-action, website links (evosolutions.lk), phone numbers, email addresses, opt-out messages, or signature blocks.
@@ -58,11 +68,11 @@ Dear {business_name} Team,
 
 Greetings from EvoSolutions! I'm Anusara Sugeeshwara from our marketing team. <authentic personalized sentence about {business_name} referencing rating {rating}/5 and {reviews_count} reviews in {address}>
 
-<1 sentence tailored EvoSolutions intro connecting our software to {category}>
+<1 sentence tailored EvoSolutions intro connecting our software/services to {category}>
 
-- <tailored bullet point 1: kitchen display sync or operational speed>
-- <tailored bullet point 2: front-of-house table pacing or guest coordination>
-- <tailored bullet point 3: direct order margin protection or inventory control>"""
+- <tailored bullet point 1 relevant to {category}>
+- <tailored bullet point 2 relevant to {category}>
+- <tailored bullet point 3 relevant to {category}>"""
 
 
 CRITIQUE_PROMPT_TEMPLATE = """Review this cold outreach email draft against these required rules:

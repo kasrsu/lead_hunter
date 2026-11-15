@@ -1,44 +1,72 @@
-import { huntLeads } from "@/lib/places";
+import { searchPlacesNew, type PlacesNewSearchOptions } from "@/lib/placesNew";
 import { getCampaignWithStats, insertCampaign } from "@/lib/repositories/campaigns";
 import { insertLeads } from "@/lib/repositories/leads";
 import type { CampaignWithStats, PersistedLead } from "@/lib/types";
 
-/**
- * Campaign orchestration (Services layer). The only place that knows a scan
- * is "hunt Places for businesses without a website, then persist them as a
- * new campaign". API routes stay thin and call this.
- */
-
-export interface CreateCampaignInput {
-  keyword: string;
+export interface CreateCampaignFromNewSearchInput {
+  categories: string[];
+  includedTypes?: string[];
   location: string;
   apiKey: string;
   minRating?: number;
   minReviews?: number;
+  hasWebsite?: "all" | "yes" | "no";
+  maxResults?: number;
   name?: string;
+  sessionId?: string;
+  mapBounds?: {
+    lat?: number;
+    lng?: number;
+    radiusMeters?: number;
+  };
 }
 
 export async function createCampaignFromSearch(
-  input: CreateCampaignInput
-): Promise<{ campaign: CampaignWithStats; leads: PersistedLead[] }> {
-  const leads = await huntLeads({
-    keyword: input.keyword,
+  input: CreateCampaignFromNewSearchInput
+): Promise<{
+  campaign: CampaignWithStats;
+  leads: PersistedLead[];
+  isCacheHit: boolean;
+  estimatedCostUsd: number;
+  totalRequests: number;
+}> {
+  const sessionId = input.sessionId || "sess_default";
+
+  // Execute Places API (New) Search with 30-day SQLite cache & field masking
+  const searchResult = await searchPlacesNew({
+    categories: input.categories,
+    includedTypes: input.includedTypes,
     location: input.location,
     apiKey: input.apiKey,
+    sessionId,
     minRating: input.minRating ?? 0,
     minReviews: input.minReviews ?? 0,
+    hasWebsite: input.hasWebsite ?? "all",
+    maxResults: input.maxResults ?? 60,
+    mapBounds: input.mapBounds,
   });
 
+  const categoriesLabel = input.categories.join(", ");
+  const campaignName = input.name ?? `${categoriesLabel || "Businesses"} in ${input.location}`;
+
   const campaign = insertCampaign({
-    name: input.name ?? `${input.keyword} in ${input.location}`,
-    keyword: input.keyword,
+    name: campaignName,
+    keyword: categoriesLabel,
     location: input.location,
     minRating: input.minRating ?? 0,
     minReviews: input.minReviews ?? 0,
+    sessionId,
   });
 
-  const persisted = insertLeads(campaign.id, leads);
+  const persisted = insertLeads(campaign.id, searchResult.leads);
   const stats = getCampaignWithStats(campaign.id);
   if (!stats) throw new Error("Campaign was created but could not be re-read");
-  return { campaign: stats, leads: persisted };
+
+  return {
+    campaign: stats,
+    leads: persisted,
+    isCacheHit: searchResult.isCacheHit,
+    estimatedCostUsd: searchResult.estimatedCostUsd,
+    totalRequests: searchResult.totalRequests,
+  };
 }

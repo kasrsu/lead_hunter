@@ -9,7 +9,7 @@ interface PipelineFunnelProps {
 export default function PipelineFunnel({ funnel }: PipelineFunnelProps) {
   const total = Object.values(funnel).reduce((a, b) => a + b, 0);
   if (total === 0) {
-    return <p className="py-6 text-sm text-paper-muted">No leads yet — run a scan to start.</p>;
+    return <p className="py-6 text-sm text-slate-500 font-medium">No leads yet — run a scan to start.</p>;
   }
 
   return (
@@ -21,15 +21,15 @@ export default function PipelineFunnel({ funnel }: PipelineFunnelProps) {
           <div key={col.stage} className="flex items-center gap-3">
             <span className="flex w-40 shrink-0 items-center gap-2">
               <span className={`h-2 w-2 rounded-full ${col.dot}`} aria-hidden />
-              <span className={`truncate text-xs ${col.text}`}>{col.label}</span>
+              <span className="truncate text-xs font-semibold text-slate-800">{col.label}</span>
             </span>
-            <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-ink-border">
+            <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-orange-100 border border-orange-200">
               <div
                 className={`h-full rounded-full ${col.dot} transition-all`}
                 style={{ width: `${pct}%` }}
               />
             </div>
-            <span className="w-14 shrink-0 text-right font-mono text-xs text-paper-muted">
+            <span className="w-14 shrink-0 text-right font-mono text-xs font-bold text-slate-900">
               {count} · {pct}%
             </span>
           </div>

@@ -132,33 +132,33 @@ export default function ImportPage() {
     <SidebarLayout>
       <div className="space-y-8 max-w-5xl">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-100">
+          <h1 className="font-display text-2xl font-bold text-slate-900">
             Flexible Lead Ingestion
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 mt-1">
             Import existing lead lists via JSON without API keys, load archived production data, or run live Google Maps scans.
           </p>
         </div>
 
         {/* Section 1: Pre-Loaded Production Data */}
-        <section className="bg-gradient-to-r from-amber-500/10 via-[#121723] to-[#121723] border border-amber-500/30 rounded-xl p-6 shadow-xl space-y-4">
+        <section className="bg-white/80 backdrop-blur-xl border border-orange-200/80 rounded-2xl p-6 shadow-xl shadow-orange-500/5 space-y-4">
           <div className="flex items-start justify-between">
             <div>
-              <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold rounded-full bg-orange-500/10 text-orange-900 border border-orange-300/60 uppercase tracking-wider">
                 Production Data Seeder
               </span>
-              <h2 className="font-display font-semibold text-lg text-slate-100 mt-2">
+              <h2 className="font-display font-semibold text-lg text-slate-900 mt-2">
                 Load 88 Production Leads from Archived Data
               </h2>
-              <p className="text-xs text-slate-400 max-w-2xl mt-1 leading-relaxed">
-                Instantly populate your management system with all 88 rich Sri Lankan hospitality leads from <code className="text-amber-400 font-mono">archived_programming/lead_details.json</code> and <code className="text-amber-400 font-mono">scored_leads.json</code>, complete with ratings, review snippets, phone, email, price ranges, and pre-drafted emails!
+              <p className="text-xs text-slate-600 max-w-2xl mt-1 leading-relaxed">
+                Instantly populate your management system with all 88 rich Sri Lankan hospitality leads from <code className="text-orange-700 font-mono font-bold">archived_programming/lead_details.json</code> and <code className="text-orange-700 font-mono font-bold">scored_leads.json</code>, complete with ratings, review snippets, phone, email, price ranges, and pre-drafted emails!
               </p>
             </div>
 
             <button
               onClick={handleSeedArchived}
               disabled={seeding}
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 flex items-center gap-2 whitespace-nowrap"
+              className="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all disabled:opacity-50 flex items-center gap-2 whitespace-nowrap"
             >
               {seeding ? (
                 <span>Loading 88 Leads...</span>
@@ -175,10 +175,10 @@ export default function ImportPage() {
 
           {seedMsg && (
             <div
-              className={`p-3 rounded-lg text-xs font-mono ${
+              className={`p-3 rounded-xl text-xs font-mono font-semibold ${
                 seedMsg.startsWith("Error")
-                  ? "bg-rose-500/10 text-rose-300 border border-rose-500/20"
-                  : "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
+                  ? "bg-rose-100 text-rose-900 border border-rose-200"
+                  : "bg-emerald-100 text-emerald-900 border border-emerald-200"
               }`}
             >
               {seedMsg}
@@ -187,19 +187,19 @@ export default function ImportPage() {
         </section>
 
         {/* Section 2: Bulk JSON Import */}
-        <section className="bg-[#121723] border border-slate-800 rounded-xl p-6 space-y-4 shadow-lg">
+        <section className="bg-white/80 backdrop-blur-xl border border-orange-200/80 rounded-2xl p-6 space-y-4 shadow-xl shadow-orange-500/5">
           <div>
-            <h2 className="font-display font-semibold text-lg text-slate-100">
+            <h2 className="font-display font-semibold text-lg text-slate-900">
               Bulk JSON Import (No API Key Required)
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1 font-medium">
               Paste any JSON lead array below. Fields like name, category, address, phone, rating, email, website will be normalized automatically into the scoring engine.
             </p>
           </div>
 
           <div className="space-y-3">
             <div>
-              <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
+              <label className="block text-xs font-mono uppercase text-orange-800 font-bold mb-1">
                 Campaign Name (Optional)
               </label>
               <input
@@ -207,19 +207,19 @@ export default function ImportPage() {
                 value={campaignName}
                 onChange={(e) => setCampaignName(e.target.value)}
                 placeholder="e.g. Q3 Hospitality Outreach Import"
-                className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-lg px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500/50"
+                className="w-full max-w-md bg-white border border-orange-200/80 rounded-xl px-3.5 py-2 text-sm text-slate-900 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 font-medium shadow-xs"
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-mono uppercase text-slate-400">
+                <label className="block text-xs font-mono uppercase text-orange-800 font-bold">
                   JSON Lead Payload
                 </label>
                 <button
                   type="button"
                   onClick={() => setJsonText(sampleJson)}
-                  className="text-[11px] text-amber-400 hover:underline font-mono"
+                  className="text-[11px] text-orange-600 hover:underline font-mono font-bold"
                 >
                   Insert Sample JSON Schema
                 </button>
@@ -229,16 +229,16 @@ export default function ImportPage() {
                 value={jsonText}
                 onChange={(e) => setJsonText(e.target.value)}
                 placeholder='[\n  {\n    "name": "Cafe Ceylon",\n    "rating": 4.6,\n    "reviews": 200\n  }\n]'
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-200 focus:outline-none focus:border-amber-500/50 leading-relaxed"
+                className="w-full bg-white border border-orange-200/80 rounded-xl p-4 font-mono text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 leading-relaxed shadow-xs"
               />
             </div>
 
             {importMsg && (
               <div
-                className={`p-3 rounded-lg text-xs font-mono ${
+                className={`p-3 rounded-xl text-xs font-mono font-semibold ${
                   importMsg.startsWith("Error")
-                    ? "bg-rose-500/10 text-rose-300 border border-rose-500/20"
-                    : "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
+                    ? "bg-rose-100 text-rose-900 border border-rose-200"
+                    : "bg-emerald-100 text-emerald-900 border border-emerald-200"
                 }`}
               >
                 {importMsg}
@@ -248,7 +248,7 @@ export default function ImportPage() {
             <button
               onClick={handleJsonImport}
               disabled={importing || !jsonText.trim()}
-              className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg transition-colors disabled:opacity-50"
+              className="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-semibold text-xs rounded-xl transition-all disabled:opacity-50 shadow-md shadow-orange-500/20"
             >
               {importing ? "Importing & Scoring Leads..." : "Import JSON Leads"}
             </button>
@@ -256,12 +256,12 @@ export default function ImportPage() {
         </section>
 
         {/* Section 3: Live Google Maps Discovery Search */}
-        <section className="bg-[#121723] border border-slate-800 rounded-xl p-6 space-y-4 shadow-lg">
+        <section className="bg-white/80 backdrop-blur-xl border border-orange-200/80 rounded-2xl p-6 space-y-4 shadow-xl shadow-orange-500/5">
           <div>
-            <h2 className="font-display font-semibold text-lg text-slate-100">
+            <h2 className="font-display font-bold text-lg text-slate-900">
               Live Google Maps Discovery
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1 font-medium">
               Search a city on Google Maps for businesses missing a website and add them as a new campaign.
             </p>
           </div>
@@ -276,7 +276,7 @@ export default function ImportPage() {
             onChange={handleSearchChange}
             onSubmit={handleSearchSubmit}
           />
-          {searchError && <p className="text-xs text-rose-400 font-mono">{searchError}</p>}
+          {searchError && <p className="text-xs text-rose-600 font-mono font-bold">{searchError}</p>}
         </section>
       </div>
     </SidebarLayout>

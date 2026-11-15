@@ -9,11 +9,11 @@ interface AIGenerationOverlayProps {
 }
 
 const STEPS = [
-  { id: 1, text: "Analyzing business profile & Google Maps signals...", icon: "🔍" },
-  { id: 2, text: "Evaluating 4-part metrics (Opportunity, Reachability)...", icon: "📊" },
-  { id: 3, text: "Drafting personalized cold outreach message...", icon: "📝" },
-  { id: 4, text: "Running AI Critique Node & verifying rubric score...", icon: "🧐" },
-  { id: 5, text: "Finalizing draft & loading into Human Approval Queue!", icon: "✨" },
+  { id: 1, text: "Analyzing business profile & Google Maps signals..." },
+  { id: 2, text: "Evaluating 4-part metrics (Opportunity, Reachability)..." },
+  { id: 3, text: "Drafting personalized cold outreach message..." },
+  { id: 4, text: "Running AI Critique Node & verifying rubric score..." },
+  { id: 5, text: "Finalizing draft & loading into Human Approval Queue!" },
 ];
 
 export default function AIGenerationOverlay({
@@ -41,19 +41,19 @@ export default function AIGenerationOverlay({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg bg-[#0F131C] border border-amber-500/30 rounded-2xl p-8 shadow-2xl space-y-6 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-orange-950/20 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-lg bg-white/95 border border-orange-200/80 rounded-2xl p-8 shadow-xl shadow-orange-500/10 space-y-6 overflow-hidden">
         {/* Glow effect behind modal */}
         <div
-          className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-25 blur-3xl animate-pulse"
-          style={{ background: "radial-gradient(circle, #F59E0B 0%, transparent 70%)" }}
+          className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{ background: "radial-gradient(circle, #F97316 0%, transparent 70%)" }}
         />
 
         {/* Spinner Header */}
         <div className="flex items-center gap-4">
-          <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30">
+          <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-md shadow-orange-500/20">
             <svg
-              className="w-6 h-6 text-amber-400 animate-spin"
+              className="w-6 h-6 text-white animate-spin"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -74,19 +74,19 @@ export default function AIGenerationOverlay({
           </div>
 
           <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400 px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/30">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-orange-800 px-2 py-0.5 rounded bg-orange-100 border border-orange-200">
               LangGraph AI Agent Active
             </span>
-            <h3 className="font-display font-semibold text-lg text-slate-100 mt-1">
+            <h3 className="font-display font-bold text-lg text-slate-900 mt-1">
               Generating Outreach for &ldquo;{leadName}&rdquo;
             </h3>
           </div>
         </div>
 
         {/* Animated Progress Bar */}
-        <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-orange-100 rounded-full overflow-hidden border border-orange-200">
           <div
-            className="h-full bg-gradient-to-r from-amber-500 to-orange-400 transition-all duration-500 rounded-full"
+            className="h-full bg-gradient-to-r from-orange-500 to-amber-500 transition-all duration-500 rounded-full"
             style={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
           />
         </div>
@@ -100,28 +100,28 @@ export default function AIGenerationOverlay({
             return (
               <div
                 key={step.id}
-                className={`flex items-center gap-3 p-2.5 rounded-lg border text-xs transition-all duration-300 ${
+                className={`flex items-center gap-3 p-2.5 rounded-xl border text-xs transition-all duration-300 ${
                   isCurrent
-                    ? "bg-amber-500/10 border-amber-500/30 text-slate-100 font-medium translate-x-1"
+                    ? "bg-gradient-to-b from-orange-500 to-amber-600 text-white font-bold border-t border-white/30 shadow-xs"
                     : isDone
-                    ? "bg-slate-900/60 border-slate-800 text-slate-400 opacity-75"
-                    : "bg-slate-950/40 border-slate-900 text-slate-600"
+                    ? "bg-orange-50/80 border-orange-200 text-orange-900 font-semibold"
+                    : "bg-white border-orange-100 text-slate-400 font-medium"
                 }`}
               >
                 <div className="w-6 h-6 rounded-full flex items-center justify-center text-sm shrink-0 font-mono">
                   {isDone ? (
-                    <span className="text-emerald-400 font-bold text-xs">✓</span>
+                    <span className="text-orange-700 font-bold text-xs">✓</span>
                   ) : isCurrent ? (
-                    <span className="animate-bounce">{step.icon}</span>
+                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
                   ) : (
-                    <span className="text-slate-600 text-[10px]">{step.id}</span>
+                    <span className="text-slate-400 text-[10px]">{step.id}</span>
                   )}
                 </div>
 
                 <span className="flex-1 font-sans">{step.text}</span>
 
                 {isCurrent && (
-                  <span className="text-[10px] font-mono text-amber-400 animate-pulse">
+                  <span className="text-[10px] font-mono text-white font-semibold">
                     Processing...
                   </span>
                 )}

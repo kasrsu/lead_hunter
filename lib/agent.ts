@@ -63,19 +63,35 @@ export async function enrichLead(lead: Lead, sender: SenderProfile): Promise<Enr
   const rating = lead.rating ? `${lead.rating}/5` : "a strong rating";
   const reviews = lead.reviews ? ` across ${lead.reviews} reviews` : "";
   const category = lead.category || "hospitality";
+  const catLower = (category || "").toLowerCase();
+  const isAgencySoftware = /marketing|advertising|software|saas|tech|agency|media|pr|consult/.test(catLower);
+  const isTrades = /plumbing|hvac|roofing|electrician|contractor|repair|solar/.test(catLower);
+  const isProfessional = /law|legal|attorney|dentist|dental|doctor|clinic|cpa|account/.test(catLower);
+
+  const solutionText = isAgencySoftware
+    ? "build high-converting digital storefronts, optimize inbound lead capture funnels, and accelerate client acquisition."
+    : isTrades
+    ? "build high-converting mobile portals, enable instant quote & booking requests, and dominate local search visibility."
+    : isProfessional
+    ? "build modern practice storefronts, automate client intake workflows, and streamline online scheduling."
+    : "build high-converting digital storefronts, integrate direct ordering systems, and drive targeted local customer acquisition.";
+
+  const classification = metrics.opportunityScore >= 70 ? "HIGH_OPPORTUNITY" : metrics.opportunityScore >= 40 ? "MEDIUM_OPPORTUNITY" : "LOW_OPPORTUNITY";
+  const templateType = lead.phone ? "WHATSAPP_INTRO" : "EMAIL_OUTREACH";
 
   const subject = `Outreach & Partnership Proposal - ${name}`;
   const emailBody = `Dear ${name} Team,
 
-I noticed ${name} has built an impressive local reputation with ${rating}${reviews}. However, many ${category} businesses lose potential customer volume and margins by not fully capturing their direct online presence.
+I noticed ${name} has built an impressive local reputation with ${rating}${reviews}. However, many ${category} businesses lose potential customer volume and margin by not fully capturing their direct digital presence.
 
-Our team at EvoSolutions works directly with leading ${category} businesses to build high-converting digital storefronts, integrate dynamic menu & ordering systems, and drive targeted local customer acquisition.
+Our team at EvoSolutions works directly with leading ${category} businesses to ${solutionText}
 
 Please visit evosolutions.lk to explore our full portfolio and solutions.
 
 Best Regards,
 Anusara Sugeeshwara
-Marketing team at EvoSolutions.`;
+Marketing team at EvoSolutions
+Phone: 0751800804 | Email: hello@evosolutions.lk | Web: evosolutions.lk`;
 
   return {
     ...lead,

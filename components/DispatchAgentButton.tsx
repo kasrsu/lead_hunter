@@ -35,13 +35,11 @@ export default function DispatchAgentButton({
           e.stopPropagation();
           setIsModalOpen(true);
         }}
-        className={`group relative overflow-hidden rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-md shadow-cyan-500/20 transition-all hover:scale-[1.03] active:scale-[0.97] flex items-center gap-2 ${sizeClasses} ${className}`}
+        className={`group relative overflow-hidden rounded-xl bg-gradient-to-b from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold border-t border-white/30 shadow-md shadow-orange-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 ${sizeClasses} ${className}`}
       >
-        {/* Glow sheen */}
-        <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 pointer-events-none" />
-
-        {/* Robot Icon */}
-        <span className="text-base leading-none animate-bounce">🤖</span>
+        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
 
         <span className="font-mono uppercase tracking-wider font-semibold">
           Dispatch Agent
