@@ -120,23 +120,23 @@ export default function CampaignBoardPage() {
       <div className="space-y-6">
         <button
           onClick={() => router.push("/campaigns")}
-          className="font-mono text-xs text-slate-400 hover:text-amber-400 transition-colors"
+          className="font-mono text-xs text-orange-800/80 hover:text-orange-950 transition-colors font-semibold"
         >
           &larr; Back to Campaigns
         </button>
 
-        <div className="flex flex-wrap items-end justify-between gap-4 bg-[#121723] border border-slate-800 rounded-xl p-6 shadow-md">
+        <div className="flex flex-wrap items-end justify-between gap-4 bg-white/80 backdrop-blur-xl border border-orange-200/80 rounded-2xl p-6 shadow-xl shadow-orange-500/5">
           <div className="min-w-0 space-y-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-amber-400 font-semibold px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/30">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-orange-950 font-bold px-2 py-0.5 rounded-md bg-orange-100/80 border border-orange-200/60">
               {campaign ? `Campaign • ${new Date(campaign.createdAt).toLocaleDateString()}` : "Campaign"}
             </span>
-            <h1 className="truncate font-display text-2xl font-bold text-slate-100">
+            <h1 className="truncate font-display text-2xl font-bold text-slate-900">
               {campaign?.name ?? "Loading…"}
             </h1>
             {campaign && (
-              <p className="font-mono text-xs text-slate-400">
+              <p className="font-mono text-xs text-slate-600 font-medium">
                 {campaign.keyword} • {campaign.location} • {campaign.leadCount} leads
-                {campaign.status === "archived" && <span className="ml-2 text-rose-400 font-bold">archived</span>}
+                {campaign.status === "archived" && <span className="ml-2 text-rose-600 font-bold">archived</span>}
               </p>
             )}
           </div>
@@ -146,23 +146,23 @@ export default function CampaignBoardPage() {
               type="button"
               onClick={enrichAll}
               disabled={busy || pendingDrafts === 0}
-              className={`rounded-xl px-5 py-2.5 text-xs font-bold transition-all shadow-lg flex items-center gap-2 ${
+              className={`rounded-xl px-5 py-2.5 text-xs font-bold transition-all shadow-md flex items-center gap-2 ${
                 busy
-                  ? "bg-amber-500/50 text-slate-950 cursor-wait animate-pulse"
+                  ? "bg-orange-500/50 text-white cursor-wait animate-pulse"
                   : pendingDrafts > 0
-                  ? "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-amber-500/20 scale-105 cursor-pointer"
-                  : "bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed opacity-60"
+                  ? "bg-gradient-to-b from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold border-t border-white/30 shadow-orange-500/20 scale-105 cursor-pointer"
+                  : "bg-orange-100 text-slate-400 border border-orange-200 cursor-not-allowed opacity-60"
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>{busy ? "🤖 Deploying Agent..." : `🚀 Deploy Agent (${pendingDrafts} Pending)`}</span>
+              <span>{busy ? "Deploying Agent..." : `Deploy Agent (${pendingDrafts} Pending)`}</span>
             </button>
             <button
               type="button"
               onClick={archiveCampaign}
-              className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-slate-400 transition hover:border-rose-500/40 hover:text-rose-400"
+              className="rounded-xl border border-orange-200/80 bg-white hover:bg-rose-50 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:text-rose-600 shadow-xs transition"
             >
               Archive
             </button>
@@ -170,12 +170,12 @@ export default function CampaignBoardPage() {
         </div>
 
         {error && (
-          <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-xs font-mono text-rose-300">
+          <p className="rounded-xl border border-rose-200 bg-rose-100 px-4 py-2.5 text-xs font-mono font-semibold text-rose-900">
             {error}
           </p>
         )}
         {notice && (
-          <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-xs font-mono text-emerald-300">
+          <p className="rounded-xl border border-emerald-200 bg-emerald-100 px-4 py-2.5 text-xs font-mono font-semibold text-emerald-900">
             {notice}
           </p>
         )}

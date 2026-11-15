@@ -3,15 +3,15 @@ scoring_agent.py
 ────────────────
 Evaluates lead metrics using a deterministic 9-factor rubric (0-100),
 classifies sales potential, selects outreach channels (EMAIL/WHATSAPP/MANUAL),
-and generates personalized 3-sentence outreach email drafts.
+and generates factual B2B opportunity audit metrics & strategy signals (no fake first-person email templates).
 """
 
 def evaluate_and_score_lead(lead_dict):
-    name = lead_dict.get("name") or "Your Business"
+    name = lead_dict.get("name") or "Business Lead"
     rating = lead_dict.get("rating")
     review_count = int(lead_dict.get("reviews") or lead_dict.get("review_count") or 0)
     price_range = lead_dict.get("priceRange") or lead_dict.get("price_range")
-    category = lead_dict.get("category")
+    category = lead_dict.get("category") or "Business"
     website = lead_dict.get("website")
     email = lead_dict.get("email")
     phone = lead_dict.get("phone")
@@ -58,12 +58,12 @@ def evaluate_and_score_lead(lead_dict):
         justifications["review_volume"] = "No review volume data; assigned neutral baseline."
 
     # 3. Premium Positioning (0-15)
-    premium_markers = ["$$$", "$$$$", "Rs 5,000+", "Rs 10,000+", "Rs 6,000"]
+    premium_markers = ["$$$", "$$$$", "Rs 5,000+", "Rs 10,000+"]
     is_fine_dining = category and ("fine dining" in category.lower() or "luxury" in category.lower())
     if is_fine_dining or (price_range and any(m in price_range for m in premium_markers)):
         scores["premium_positioning"] = 15
         justifications["premium_positioning"] = "Clear premium pricing or Fine Dining category."
-    elif price_range and ("$$" in price_range or "Rs 3,000" in price_range or "Rs 2,000" in price_range):
+    elif price_range and ("$$" in price_range or "Rs 3,000" in price_range):
         scores["premium_positioning"] = 10
         justifications["premium_positioning"] = "Mid-tier pricing strategy."
     else:
@@ -99,7 +99,7 @@ def evaluate_and_score_lead(lead_dict):
     # 6. Brand Strength (0-10)
     if scores["rating_quality"] >= 15 and scores["review_volume"] >= 10:
         scores["brand_strength"] = 10
-        justifications["brand_strength"] = "High ratings at scale indicates a highly defensible brand."
+        justifications["brand_strength"] = "High ratings at scale indicates a defensible brand."
     elif scores["rating_quality"] >= 10 and scores["review_volume"] >= 5:
         scores["brand_strength"] = 5
         justifications["brand_strength"] = "Moderate brand strength with established customer base."
@@ -118,104 +118,105 @@ def evaluate_and_score_lead(lead_dict):
     # 8. Weakness Exposure (0-5)
     if not has_web or not has_social:
         scores["weakness_exposure"] = 5
-        justifications["weakness_exposure"] = "Exposed: Losing D2C margin to 3rd party aggregators."
+        justifications["weakness_exposure"] = "Exposed: Missing owned digital storefront."
     else:
         scores["weakness_exposure"] = 0
-        justifications["weakness_exposure"] = "Protected: Owns their digital storefront."
+        justifications["weakness_exposure"] = "Protected: Owns digital storefront."
 
     # 9. Ease of Closing (0-5)
     if has_phone and not is_fine_dining:
         scores["ease_of_closing"] = 5
-        justifications["ease_of_closing"] = "High ease: Direct phone line and likely owner-operator."
+        justifications["ease_of_closing"] = "High ease: Direct phone line available."
     else:
         scores["ease_of_closing"] = 2
-        justifications["ease_of_closing"] = "Medium/Low ease: Corporate gatekeepers or missing contacts."
+        justifications["ease_of_closing"] = "Medium/Low ease: Corporate gatekeepers."
 
     total_score = sum(scores.values())
 
     # Lead Classification
     classification = "GENERAL_OUTREACH"
-    if scores["premium_positioning"] == 15 and scores["rating_quality"] >= 15:
-        classification = "LUXURY_PREMIUM"
-    elif scores["digital_presence"] == 0 and scores["review_volume"] >= 5:
+    if not has_web and review_count >= 5:
         classification = "DIGITAL_WEAKNESS_OPPORTUNITY"
+    elif scores["premium_positioning"] == 15 and scores["rating_quality"] >= 15:
+        classification = "LUXURY_PREMIUM"
     elif rating and rating >= 4.6 and review_count and review_count < 150:
         classification = "HIGH_POTENTIAL_GROWTH"
     elif rating and rating < 4.2 and rating > 0:
         classification = "REPUTATION_RISK"
-    elif is_fine_dining and not has_social:
-        classification = "COMPETITOR_PRESSURE_TARGET"
 
     # Channel Selection
     channel = "MANUAL"
-    if has_phone and total_score > 70:
+    if has_phone and total_score >= 60:
         channel = "WHATSAPP"
-    elif has_email and total_score > 50:
+    elif has_email and total_score >= 50:
         channel = "EMAIL"
 
-    # Template Selection
-    template_type = "general_ai_pitch"
-    if classification == "LUXURY_PREMIUM":
-        template_type = "luxury_pitch"
-    elif classification == "DIGITAL_WEAKNESS_OPPORTUNITY":
-        template_type = "social_media_weakness_pitch"
-    elif classification == "HIGH_POTENTIAL_GROWTH":
-        template_type = "hidden_growth_pitch"
-    elif classification == "REPUTATION_RISK":
-        template_type = "reputation_fix_pitch"
-    elif classification == "COMPETITOR_PRESSURE_TARGET":
-        template_type = "competitor_pressure_pitch"
+    # Build Factual B2B Audit Metrics & Strategy Signals (No fake first-person email text)
+    audit_points = []
+    
+    cat_lower = (category or "").lower()
+    is_agency_software = any(k in cat_lower for k in ["marketing", "advertising", "software", "saas", "tech", "agency", "media", "pr", "consult"])
+    is_trades = any(k in cat_lower for k in ["plumbing", "hvac", "roofing", "electrician", "contractor", "repair", "solar"])
+    is_professional = any(k in cat_lower for k in ["law", "legal", "attorney", "dentist", "dental", "doctor", "clinic", "cpa", "account"])
 
-    # 3-Sentence Outreach Email Pitch
-    rating_str = f"{rating}/5" if rating else "a strong"
-    review_str = f" from {review_count} reviews" if review_count else ""
-
-    POSTFIX_SIGNATURE = (
-        "We have attached our full partnership proposal PDF to this email for your convenience—please feel free to review it! Would love to hear your thoughts or connect for a brief chat.\n\n"
-        "If you don't wish to explore this or feel it isn't a fit, please be kind enough to reply and let us know so we can improve and ensure we won't reach out or bother you further.\n\n"
-        "Best Regards,\n"
-        "Anusara Sugeeshwara\n"
-        "Marketing team at EvoSolutions\n"
-        "Phone: 0751800804 | Email: hello@evosolutions.lk | Web: evosolutions.lk"
-    )
-
-    if review_count >= 500:
-        opening = f"Greetings from EvoSolutions! I'm Anusara Sugeeshwara from our marketing team. As one of the most prominent dining landmarks in the area, {name}'s incredible {rating_str} rating across {review_count:,} reviews is a testament to the experience you deliver."
-    elif review_count >= 50:
-        opening = f"Greetings from EvoSolutions! I'm Anusara Sugeeshwara from our marketing team. We've been following {name}'s strong standing as a local favorite, earning an impressive {rating_str} rating across {review_count} reviews."
+    # 1. Digital Footprint Audit
+    if not has_web:
+        if is_agency_software:
+            audit_points.append("🚨 MISSING OFFICIAL WEBSITE: Prime prospect for custom Web Storefront, Inbound Lead Capture & Google Business Optimization ($1,500–$3,500 pitch value).")
+        elif is_trades or is_professional:
+            audit_points.append("🚨 MISSING OFFICIAL WEBSITE: Prime prospect for Instant Booking/Quote Portal & Google Business Optimization ($1,500–$3,500 pitch value).")
+        else:
+            audit_points.append("🚨 MISSING OFFICIAL WEBSITE: Prime prospect for custom Web Storefront, Online Reservations & Google Business Optimization ($1,500–$3,500 pitch value).")
     else:
-        opening = f"Greetings from EvoSolutions! I'm Anusara Sugeeshwara from our marketing team. We noticed {name} is building a fantastic standard with an impressive {rating_str} rating from {review_count} reviews."
+        audit_points.append(f"🌐 ACTIVE WEBSITE: {website}")
 
-    evo_intro = "At EvoSolutions, we build Sri Lankan restaurant software (smart POS, real-time kitchen displays, and table management) designed to help high-performing venues eliminate operational friction and keep guest experiences smooth."
-
-    if template_type == "luxury_pitch":
-        b1 = "- Front-of-house table coordination to streamline service pacing for fine dining"
-        b2 = "- Real-time kitchen display sync to eliminate ticket delays during peak dinner hours"
-        b3 = "- Centralized billing integration for seamless, error-free guest settlements"
-    elif template_type == "social_media_weakness_pitch":
-        b1 = "- Direct digital ordering channels to protect D2C margins from third-party aggregators"
-        b2 = "- Seamless menu management directly linked to kitchen and cashier displays"
-    elif template_type == "hidden_growth_pitch":
-        b1 = "- Real-time kitchen display sync to eliminate paper ticket confusion"
-        b2 = "- Automated order pacing to handle growing customer volume effortlessly"
-    elif template_type == "reputation_fix_pitch":
-        b1 = "- Instant POS-to-kitchen order routing to eliminate wait-time bottlenecks"
-        b2 = "- Quick cashier settlement workflows to speed up table turnover"
+    # 2. Contact Availability Audit
+    if not has_email and not has_phone:
+        audit_points.append("⚠️ CRITICAL CONTACT GAP: Neither direct email nor phone is listed on Google Maps.")
+    elif not has_email:
+        audit_points.append(f"📞 DIRECT PHONE AVAILABLE ({phone}) | ⚠️ Missing Direct Email — Cold Calling or WhatsApp Outreach Recommended.")
+    elif not has_phone:
+        audit_points.append(f"📧 DIRECT EMAIL AVAILABLE ({email}) | ⚠️ Missing Direct Phone Number.")
     else:
-        b1 = "- Real-time kitchen display sync to eliminate paper ticket delays"
-        b2 = "- Front-of-house table management to streamline service pacing"
+        audit_points.append(f"✅ OMNICHANNEL CONTACT READY: Email ({email}) & Phone ({phone}).")
 
-    bullets = f"{b1}\n{b2}" + (f"\n{b3}" if "b3" in locals() else "")
-    email_body = f"Dear {name} Team,\n\n{opening}\n\n{evo_intro}\n\n{bullets}\n\n{POSTFIX_SIGNATURE}"
+    # 3. Reputation & Review Volume Audit
+    if rating and rating >= 4.5 and review_count >= 500:
+        audit_points.append(f"⭐ HIGH REPUTATION AT SCALE: {rating}★ rating with {review_count:,} reviews — High-volume established operator.")
+    elif rating and rating >= 4.4 and review_count < 100:
+        audit_points.append(f"⭐ HIGH QUALITY, LOW REVIEWS: Excellent rating ({rating}★) but under 100 reviews ({review_count}) — Prime candidate for Automated Review Collection & Local SEO.")
+    elif review_count and review_count < 30:
+        audit_points.append(f"⚠️ LOW REVIEW VOLUME: Only {review_count} reviews — Early-stage or digitally underserved business.")
+    else:
+        audit_points.append(f"📊 REPUTATION METRICS: {rating or 'N/A'}★ rating across {review_count:,} reviews.")
+
+    # 4. Strategy Signal
+    if not has_web:
+        strat = "HIGH CONVERSION PROSPECT: No website listed despite active operations. Pitch custom web storefront + Google Maps optimization."
+    elif not has_email:
+        strat = "PHONE/WHATSAPP OUTREACH PROSPECT: Direct email is unlisted. Use direct line/WhatsApp for decision-maker introduction."
+    elif rating and rating >= 4.5:
+        if is_agency_software:
+            strat = "PREMIUM REPUTATION PROSPECT: Well-reviewed agency/software business. Pitch inbound lead capture funnels & client acquisition infrastructure."
+        elif is_trades or is_professional:
+            strat = "PREMIUM REPUTATION PROSPECT: Well-reviewed service provider. Pitch automated quote/intake booking & local review automation."
+        else:
+            strat = "PREMIUM REPUTATION PROSPECT: Well-reviewed venue. Pitch review management automation or premium software add-ons."
+    else:
+        strat = "STANDARD B2B OUTREACH PROSPECT: Contact via verified channels with tailored service proposal."
+
+    audit_summary = f"OPPORTUNITY AUDIT:\n" + "\n".join(audit_points) + f"\n\nSTRATEGY SIGNAL:\n{strat}"
 
     return {
         "leadScore": total_score,
         "classification": classification,
         "channel": channel,
-        "templateType": template_type,
+        "templateType": "factual_audit_metrics",
         "rubricScores": scores,
         "rubricJustification": justifications,
-        "emailBody": email_body,
-        "reasoningSummary": f"Lead scored {total_score}/100. Classified as {classification} due to rating/digital presence analysis. Routed to {channel}.",
+        "emailBody": audit_summary,
+        "pitchDraft": audit_summary,
+        "recommendedAngle": strat,
+        "reasoningSummary": f"Lead scored {total_score}/100 ({classification}). Audited website ({'Yes' if has_web else 'No'}), email ({'Yes' if has_email else 'No'}), phone ({'Yes' if has_phone else 'No'}).",
         "pipelineStage": "new"
     }

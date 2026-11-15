@@ -165,7 +165,7 @@ export function insertLeads(campaignId: string, leads: Partial<Lead>[]): Persist
       address: lead.address || "",
       phone: lead.phone || "",
       rating: lead.rating ?? 0,
-      reviews: lead.reviews ?? 0,
+      reviews: lead.reviews ?? (lead as any).reviewCount ?? (lead as any).reviews_count ?? (lead as any).user_ratings_total ?? 0,
       maps_url: lead.mapsUrl || "",
       category: lead.category || "General",
       website,

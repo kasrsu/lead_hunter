@@ -12,8 +12,8 @@ import type { DashboardStats } from "@/lib/types";
  * Dashboard roll-up (Services layer). Pure read aggregation — the dashboard
  * route just calls this and serializes it.
  */
-export function getDashboardStats(): DashboardStats {
-  const campaigns = listCampaignsWithStats();
+export function getDashboardStats(sessionId?: string): DashboardStats {
+  const campaigns = listCampaignsWithStats(sessionId);
   const stageCounts = getStageCounts();
   const tierCounts = getPriorityTierCounts();
   const contactBreakdown = getContactBreakdown();

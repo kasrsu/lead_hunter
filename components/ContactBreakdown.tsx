@@ -27,40 +27,36 @@ export default function ContactBreakdown({ breakdown }: ContactBreakdownProps) {
       label: "Direct Email Available",
       count: data.hasEmail,
       pct: getPct(data.hasEmail),
-      color: "bg-emerald-500",
-      textColor: "text-emerald-400",
-      icon: "📧",
+      color: "bg-gradient-to-r from-orange-500 to-amber-500",
+      textColor: "text-orange-600",
     },
     {
       label: "Phone Only (WhatsApp Ready)",
       count: data.hasPhoneOnly,
       pct: getPct(data.hasPhoneOnly),
       color: "bg-amber-500",
-      textColor: "text-amber-400",
-      icon: "📞",
+      textColor: "text-amber-700",
     },
     {
       label: "Socials Only (IG/FB)",
       count: data.hasSocialsOnly,
       pct: getPct(data.hasSocialsOnly),
-      color: "bg-blue-500",
-      textColor: "text-blue-400",
-      icon: "📱",
+      color: "bg-orange-400",
+      textColor: "text-orange-800",
     },
     {
       label: "Missing Direct Contact",
       count: data.noDirectContact,
       pct: getPct(data.noDirectContact),
-      color: "bg-[#252C3D]",
-      textColor: "text-slate-400",
-      icon: "⚠️",
+      color: "bg-orange-200",
+      textColor: "text-slate-500",
     },
   ];
 
   return (
     <div className="space-y-4">
       {/* Progress bar stack */}
-      <div className="h-3 w-full bg-slate-900 rounded-full overflow-hidden flex">
+      <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden flex border border-slate-200">
         {items.map(
           (item, idx) =>
             item.count > 0 && (
@@ -79,12 +75,12 @@ export default function ContactBreakdown({ breakdown }: ContactBreakdownProps) {
         {items.map((item, idx) => (
           <div
             key={idx}
-            className="p-3 bg-slate-900/60 border border-slate-800 rounded-lg flex items-center justify-between"
+            className="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between shadow-xs"
           >
             <div className="flex items-center gap-2">
-              <span className="text-sm">{item.icon}</span>
+              <span className={`w-2 h-2 rounded-full ${item.color}`} />
               <div>
-                <span className="font-medium text-slate-300 block text-[11px] leading-tight">
+                <span className="font-medium text-slate-800 block text-[11px] leading-tight">
                   {item.label}
                 </span>
                 <span className="text-[10px] text-slate-500 font-mono">

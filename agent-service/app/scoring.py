@@ -205,26 +205,26 @@ def score_lead(lead: dict) -> dict:
 # the email message matches why this lead is worth pursuing.
 ANGLES: dict[str, str] = {
     "luxury_pitch": (
-        "premium positioning — how similar high-end venues protect high-margin "
-        "revenue with better digital infrastructure"
+        "premium positioning — how top-tier local providers protect brand authority "
+        "and client retention with custom digital infrastructure"
     ),
     "social_media_weakness_pitch": (
-        "the missing direct digital channel — how businesses lose ~20% margin to "
-        "third-party aggregators when they don't own their own storefront"
+        "the missing direct digital channel — capturing direct inbound leads and client inquiries "
+        "without relying on middleman platforms"
     ),
     "hidden_growth_pitch": (
-        "growth-stage scaling — how venues scale hospitality without manual table "
-        "management and menu updates slowing operations down"
+        "growth-stage scaling — streamlining client acquisition and service intake "
+        "without operational bottlenecks"
     ),
     "reputation_fix_pitch": (
-        "recent mixed feedback — how the friction behind wait times and operations "
-        "usually comes from disconnected POS and table systems"
+        "client feedback & local search — turning high satisfaction ratings into automated "
+        "review acquisition and higher local Google visibility"
     ),
     "competitor_pressure_pitch": (
-        "standing out online — how digital-invisible premium venues lose customers "
-        "to competitors who show up on Google"
+        "standing out online — how digitally-underserved premium businesses lose high-value "
+        "clients to competitors with modern web presence"
     ),
     "general_ai_pitch": (
-        "efficiency and margins — streamlining menu operations and digital infrastructure"
+        "efficiency & conversion — building high-converting web storefronts and automated client intake"
     ),
 }

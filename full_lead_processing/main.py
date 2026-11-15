@@ -85,9 +85,19 @@ def run_pipeline(csv_input_path, json_output_path):
         lead['instagram'] = instagram
         lead['facebook'] = facebook
 
-        # Step 3: Run Agent Rubric Scoring & Pitch Copywriting
-        agent_res = evaluate_and_score_lead(lead)
-        lead.update(agent_res)
+        # Step 3: Run Agent Rubric Scoring & Pitch Copywriting (if not skipped)
+        if os.environ.get("SKIP_ENRICHMENT") == "1":
+            lead.update({
+                "leadScore": 50,
+                "classification": "UNASSIGNED",
+                "channel": "DIRECT",
+                "recommendedAngle": "Raw scraped business contact",
+                "pitchDraft": "AI enrichment disabled.",
+                "rubricBreakdown": []
+            })
+        else:
+            agent_res = evaluate_and_score_lead(lead)
+            lead.update(agent_res)
 
         print(f"   🎯 Lead Score: {lead['leadScore']}/100 | Class: {lead['classification']} | Channel: {lead['channel']}")
         print(f"   📧 Contact Email: {email or '—'} | Phone: {phone or '—'}")
@@ -120,18 +130,21 @@ if __name__ == "__main__":
     print("==================================================", flush=True)
     input_arg = sys.argv[1] if len(sys.argv) > 1 else "places_test2.csv"
     output_file = sys.argv[2] if len(sys.argv) > 2 else "places_test2_campaign.json"
+    max_leads_val = int(sys.argv[3]) if len(sys.argv) > 3 else int(os.environ.get("MAX_LEADS", 25))
     print(f"📥 Input Target : {input_arg}", flush=True)
-    print(f"📁 Output Target: {output_file}\n", flush=True)
+    print(f"📁 Output Target: {output_file}", flush=True)
+    print(f"📊 Max Leads    : {max_leads_val}\n", flush=True)
 
     if input_arg.startswith(('http://', 'https://')):
         print("🌐 [Detected Web URL] Triggering Playwright Google Maps Browser Scraper...", flush=True)
         try:
             from gmaps_browser_scraper import scrape_google_maps
-            scrape_google_maps(input_arg, output_file)
+            scrape_google_maps(input_arg, output_file, max_leads_val)
         except Exception as e:
             print(f"❌ Error in browser scraper: {e}", flush=True)
             import traceback
             traceback.print_exc()
+            sys.exit(1)
     else:
         print("📄 [Detected CSV File] Running CSV Lead Pipeline...", flush=True)
         run_pipeline(input_arg, output_file)

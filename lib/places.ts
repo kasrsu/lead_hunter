@@ -112,15 +112,34 @@ export async function huntLeads({
       if (hasWebsite) continue;
       if (rating < minRating || reviews < minReviews) continue;
 
+      const placeCategory = (details.types ?? [])[0] ?? keyword;
+      const placeName = details.name ?? "";
+
+      // Strict Cuisine/Niche Category Check
+      const knownCuisines = [
+        "french", "italian", "chinese", "mexican", "japanese", "indian",
+        "thai", "vietnamese", "greek", "spanish", "cajun", "american",
+        "new american", "caribbean", "mediterranean", "lebanese", "turkish",
+        "korean", "brazilian", "ethiopian", "cuban", "peruvian", "german",
+        "irish", "sushi", "pizza", "seafood", "steakhouse", "barbecue", "bbq"
+      ];
+      const targetCuisines = knownCuisines.filter((c) => keyword.toLowerCase().includes(c));
+      if (targetCuisines.length > 0) {
+        const catStr = placeCategory.toLowerCase();
+        const nameStr = placeName.toLowerCase();
+        const matches = targetCuisines.some((c) => catStr.includes(c) || nameStr.includes(c));
+        if (!matches) continue; // Filter out niche mismatches
+      }
+
       leads.push({
         placeId,
-        name: details.name ?? "",
+        name: placeName,
         address: details.formatted_address ?? "",
         phone: details.formatted_phone_number ?? details.international_phone_number ?? "",
         rating,
         reviews,
         mapsUrl: details.url ?? "",
-        category: (details.types ?? [])[0] ?? keyword,
+        category: placeCategory,
       });
 
       if (leads.length >= maxResults) break;

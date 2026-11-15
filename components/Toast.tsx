@@ -30,17 +30,23 @@ export default function Toast({
   return (
     <div className="fixed bottom-6 right-6 z-50 animate-slide-up">
       <div
-        className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-2xl backdrop-blur-md text-xs font-medium ${
+        className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl backdrop-blur-xl text-xs font-semibold ${
           isError
-            ? "bg-rose-950/90 border-rose-500/40 text-rose-200 shadow-rose-950/50"
-            : "bg-slate-900/90 border-amber-500/40 text-slate-100 shadow-amber-500/10"
+            ? "bg-rose-50 border-rose-200 text-rose-900 shadow-rose-500/10"
+            : "bg-white/95 border-orange-200/80 text-slate-900 shadow-orange-500/10"
         }`}
       >
-        <span className="text-base">{isError ? "⚠️" : "✨"}</span>
+        <svg className={`w-4 h-4 shrink-0 ${isError ? "text-rose-600" : "text-orange-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {isError ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+          )}
+        </svg>
         <span className="font-sans">{message}</span>
         <button
           onClick={onClose}
-          className="ml-2 text-slate-400 hover:text-slate-200 text-sm font-bold"
+          className="ml-2 text-slate-400 hover:text-slate-700 text-sm font-bold"
         >
           &times;
         </button>

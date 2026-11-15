@@ -23,12 +23,12 @@ export interface PipelineColumn {
 }
 
 export const PIPELINE: readonly PipelineColumn[] = [
-  { stage: "new", label: "New", dot: "bg-paper-muted", text: "text-paper-muted" },
-  { stage: "drafting", label: "Drafting", dot: "bg-signal", text: "text-signal" },
-  { stage: "ready", label: "Awaiting approval", dot: "bg-info", text: "text-info" },
-  { stage: "sent", label: "Sent", dot: "bg-noise", text: "text-noise" },
-  { stage: "won", label: "Won", dot: "bg-noise", text: "text-noise" },
-  { stage: "archived", label: "Archived", dot: "bg-red-500", text: "text-red-400" },
+  { stage: "new", label: "New", dot: "bg-slate-400", text: "text-slate-900" },
+  { stage: "drafting", label: "Drafting", dot: "bg-amber-500", text: "text-slate-900" },
+  { stage: "ready", label: "Awaiting approval", dot: "bg-orange-500", text: "text-slate-900" },
+  { stage: "sent", label: "Sent", dot: "bg-emerald-500", text: "text-slate-900" },
+  { stage: "won", label: "Won", dot: "bg-indigo-500", text: "text-slate-900" },
+  { stage: "archived", label: "Archived", dot: "bg-rose-500", text: "text-slate-900" },
 ];
 
 export function pipelineLabel(stage: PipelineStage): string {

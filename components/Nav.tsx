@@ -2,22 +2,22 @@ import Link from "next/link";
 
 export default function Nav() {
   return (
-    <header className="sticky top-0 z-20 border-b border-ink-border bg-ink/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+    <header className="sticky top-0 z-20 glass-header">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
         <Link
           href="/"
-          className="flex items-baseline gap-2 font-mono text-xs uppercase tracking-widest"
+          className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest font-bold text-slate-900"
         >
-          <span className="h-2 w-2 self-center rounded-full bg-signal" aria-hidden />
-          <span className="text-paper">Lead Hunter</span>
-          <span className="hidden text-paper-muted/60 sm:inline">/ lead management</span>
+          <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 shadow-xs" aria-hidden />
+          <span>Lead Hunter</span>
+          <span className="hidden text-orange-950/70 sm:inline">/ Lead OS</span>
         </Link>
-        <nav className="flex items-center gap-6 font-mono text-xs text-paper-muted">
-          <Link href="/" className="transition hover:text-paper">
+        <nav className="flex items-center gap-6 font-mono text-xs font-bold text-slate-700">
+          <Link href="/" className="transition hover:text-orange-600">
             Dashboard
           </Link>
-          <Link href="/#scan" className="transition hover:text-paper">
-            New scan
+          <Link href="/import" className="transition hover:text-orange-600">
+            Ingestion &amp; Scan
           </Link>
         </nav>
       </div>

@@ -6,6 +6,7 @@ interface SearchFormProps {
   apiKey: string;
   minRating: number;
   minReviews: number;
+  targetSegment?: string;
   loading: boolean;
   onChange: (field: string, value: string | number) => void;
   onSubmit: () => void;
@@ -17,6 +18,7 @@ export default function SearchForm({
   apiKey,
   minRating,
   minReviews,
+  targetSegment = "underdog",
   loading,
   onChange,
   onSubmit,
@@ -27,46 +29,60 @@ export default function SearchForm({
         e.preventDefault();
         onSubmit();
       }}
-      className="grid gap-4 rounded-xl border border-ink-border bg-ink-surface p-6"
+      className="grid gap-5 rounded-2xl border border-orange-200/80 bg-white/90 backdrop-blur-xl p-6 shadow-xl shadow-orange-500/5"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-1.5 text-sm">
-          <span className="text-paper-muted">Google Places API key</span>
+        <label className="grid gap-1.5 text-xs font-mono uppercase text-orange-950 font-bold">
+          <span>Google Places API key</span>
           <input
             type="password"
             required
             value={apiKey}
             onChange={(e) => onChange("apiKey", e.target.value)}
-            placeholder="AIza..."
-            className="rounded-lg border border-ink-border bg-ink px-3 py-2 font-mono text-sm text-paper placeholder:text-paper-muted/50 focus:border-signal"
+            placeholder="AIzaSy..."
+            className="w-full rounded-xl border border-orange-200/80 bg-white px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none font-medium shadow-xs"
           />
         </label>
-        <label className="grid gap-1.5 text-sm">
-          <span className="text-paper-muted">Business type</span>
+        <label className="grid gap-1.5 text-xs font-mono uppercase text-orange-950 font-bold">
+          <span>Business type / Cuisine</span>
           <input
             required
             value={keyword}
             onChange={(e) => onChange("keyword", e.target.value)}
-            placeholder="restaurant"
-            className="rounded-lg border border-ink-border bg-ink px-3 py-2 text-sm text-paper placeholder:text-paper-muted/50 focus:border-signal"
+            placeholder="French restaurant"
+            className="w-full rounded-xl border border-orange-200/80 bg-white px-3.5 py-2.5 font-sans text-sm text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none font-medium shadow-xs"
           />
         </label>
       </div>
 
-      <label className="grid gap-1.5 text-sm">
-        <span className="text-paper-muted">Location</span>
-        <input
-          required
-          value={location}
-          onChange={(e) => onChange("location", e.target.value)}
-          placeholder="Colombo, Sri Lanka"
-          className="rounded-lg border border-ink-border bg-ink px-3 py-2 text-sm text-paper placeholder:text-paper-muted/50 focus:border-signal"
-        />
-      </label>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="grid gap-1.5 text-xs font-mono uppercase text-orange-950 font-bold">
+          <span>Target City / Location</span>
+          <input
+            required
+            value={location}
+            onChange={(e) => onChange("location", e.target.value)}
+            placeholder="New York, NY"
+            className="w-full rounded-xl border border-orange-200/80 bg-white px-3.5 py-2.5 font-sans text-sm text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none font-medium shadow-xs"
+          />
+        </label>
+        <label className="grid gap-1.5 text-xs font-mono uppercase text-orange-950 font-bold">
+          <span>Target Audience Segment</span>
+          <select
+            value={targetSegment}
+            onChange={(e) => onChange("targetSegment", e.target.value)}
+            className="w-full rounded-xl border border-orange-200/80 bg-white px-3.5 py-2.5 font-sans text-sm text-slate-900 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none font-medium shadow-xs"
+          >
+            <option value="underdog">🎯 Underdogs (No Website / Small Spots - Original Plan)</option>
+            <option value="established">🏆 Established High-Review Icons (Ops/VIP Pitch)</option>
+            <option value="all">🌐 All Matching Businesses</option>
+          </select>
+        </label>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-1.5 text-sm">
-          <span className="text-paper-muted">Minimum rating</span>
+        <label className="grid gap-1.5 text-xs font-mono uppercase text-orange-950 font-bold">
+          <span>Minimum rating</span>
           <input
             type="number"
             min={0}
@@ -74,17 +90,17 @@ export default function SearchForm({
             step={0.1}
             value={minRating}
             onChange={(e) => onChange("minRating", Number(e.target.value))}
-            className="rounded-lg border border-ink-border bg-ink px-3 py-2 font-mono text-sm text-paper focus:border-signal"
+            className="w-full rounded-xl border border-orange-200/80 bg-white px-3.5 py-2.5 font-mono text-sm text-slate-900 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none font-medium shadow-xs"
           />
         </label>
-        <label className="grid gap-1.5 text-sm">
-          <span className="text-paper-muted">Minimum reviews</span>
+        <label className="grid gap-1.5 text-xs font-mono uppercase text-orange-950 font-bold">
+          <span>Minimum reviews</span>
           <input
             type="number"
             min={0}
             value={minReviews}
             onChange={(e) => onChange("minReviews", Number(e.target.value))}
-            className="rounded-lg border border-ink-border bg-ink px-3 py-2 font-mono text-sm text-paper focus:border-signal"
+            className="w-full rounded-xl border border-orange-200/80 bg-white px-3.5 py-2.5 font-mono text-sm text-slate-900 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none font-medium shadow-xs"
           />
         </label>
       </div>
@@ -92,9 +108,12 @@ export default function SearchForm({
       <button
         type="submit"
         disabled={loading}
-        className="mt-2 rounded-lg bg-signal px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-signal/90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-2 w-full py-3 rounded-xl bg-gradient-to-b from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold text-xs border-t border-white/30 shadow-md shadow-orange-500/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
       >
-        {loading ? "Scanning…" : "Scan for leads"}
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <span>{loading ? "Scanning Google Maps…" : "Scan Google Maps for Leads"}</span>
       </button>
     </form>
   );
