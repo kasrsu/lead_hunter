@@ -1,7 +1,0 @@
-﻿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 
-✻ Worked for 2m 26s · 2 shells still running
-
-───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-  Background work is running
-Resume this session with: when you exit:
-claude --resume 8784366a-cdc7-42e9-a287-bd0e6f2f1bac
